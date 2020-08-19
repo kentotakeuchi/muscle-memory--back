@@ -1,0 +1,8 @@
+{
+  "name": "muscle-memory--back",
+  "version": "1.0.0",
+  "description": "This app is updated version of BANK which I created before.",
+  "main": "app.js",
+  "author": "Kento Takeuchi",
+  "license": "MIT"
+}
