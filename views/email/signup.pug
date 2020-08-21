@@ -1,0 +1,18 @@
+extends baseEmail
+
+block content
+  p Hi #{firstName},
+  p You've created a new admin account at Yuzu ramen.
+  p All you have to do is clicking a button below and signing in.
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a(href=`${url}`, target='_blank') SIGN IN
+  p If you need any help with signing in your admin page, please feel free to contact us 🙂
+  a(href='mailto:kento.takeuchi.official@gmail.com', target='_blank')
+    p - Kento Takeuchi, Web Developer
