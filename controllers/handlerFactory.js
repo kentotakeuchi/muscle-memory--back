@@ -67,40 +67,8 @@ exports.getOne = (Model, popOptions) =>
 
 exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
-    let filter = {};
-
-    // PRODUCTS ////////////////////////////////////
-    // Filtered by search text & category
-    if (req.query.name && req.params.categoryId) {
-      filter = {
-        name: { $regex: req.query.name, $options: 'i' },
-        category: req.params.categoryId
-      };
-    }
-    // Filtered by search text
-    else if (req.query.name) {
-      filter = { name: { $regex: req.query.name, $options: 'i' } };
-    }
-    // Filtered by category
-    else if (req.params.categoryId)
-      filter = { category: req.params.categoryId };
-    // PRODUCT ////////////////////////////////////
-
-    // POSTS ////////////////////////////////////
-    // Filtered by search text & section
-    if (req.query.title && req.params.sectionId) {
-      filter = {
-        title: { $regex: req.query.title, $options: 'i' },
-        section: req.params.sectionId
-      };
-    }
-    // Filtered by search text
-    else if (req.query.title) {
-      filter = { title: { $regex: req.query.title, $options: 'i' } };
-    }
-    // Filtered by section
-    else if (req.params.sectionId) filter = { section: req.params.sectionId };
-    // POSTS ////////////////////////////////////
+    // TODO: let --> const now
+    const filter = {};
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
@@ -123,8 +91,8 @@ exports.getAll = Model =>
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
-      total: total, // total size of filterd items for 'paginator'
-      results: doc.length,
+      filteredTotal: total, // total size of filterd items for 'paginator'
+      total: doc.length,
       data: {
         data: doc
       }

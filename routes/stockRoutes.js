@@ -14,13 +14,13 @@ router
   .get(stockController.getAllStock)
   .post(setStockCreatorIds, stockController.createStock);
 
+router.route('/random-multiple').get(stockController.getRandomMultipleStock);
+
 router
   .route('/:id')
   .get(stockController.getStock)
   .patch(stockController.updateStock)
   .delete(stockController.deleteStock);
-
-// router.route('/random').get(stockController.getRandom);
 
 // router.route('/random-one').get(stockController.getRandomOne);
 

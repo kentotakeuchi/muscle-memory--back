@@ -69,7 +69,7 @@ exports.login = catchAsync(async (req, res, next) => {
   // 2) Check if User exists && password is correct
   const user = await User.findOne({ email }).select('+password');
 
-  if (!user || !(await User.correctPassword(password, user.password))) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
@@ -93,8 +93,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 
   // 2) Generate the random reset token
-  const resetToken = User.createPasswordResetToken();
-  await User.save({ validateBeforeSave: false });
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
   try {
@@ -105,16 +105,16 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       resetURL = `${process.env.URL_PROD}/reset/${resetToken}`;
     }
 
-    await new Email(User, resetURL).sendPasswordReset();
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',
       message: 'Token sent to email!'
     });
   } catch (err) {
-    User.passwordResetToken = undefined;
-    User.passwordResetExpires = undefined;
-    await User.save({ validateBeforeSave: false });
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
 
     return next(
       new AppError('There was an error sending the email. Try again later!'),
@@ -143,7 +143,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  await User.save();
+  await user.save();
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
@@ -155,14 +155,14 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password');
 
   // 2) Check if POSTed current password is correct
-  if (!(await User.correctPassword(req.body.passwordCurrent, user.password))) {
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
     return next(new AppError('Your current password is wrong.', 401));
   }
 
   // 3) If so, update password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  await User.save();
+  await user.save();
   // User.findByIdAndUpdate will NOT work as intended!
 
   // 4) Log user in, send JWT

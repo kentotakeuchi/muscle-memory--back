@@ -97,7 +97,7 @@ app.use((req, res, next) => {
 
 // 3) ROUTES
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/stock', stockRouter);
+app.use('/api/v1/stocks', stockRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

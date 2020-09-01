@@ -43,7 +43,8 @@ const stockSchema = new mongoose.Schema(
 stockSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'creator',
-    select: '-__v -createdAt -updatedAt'
+    select:
+      '-__v -createdAt -updatedAt -firstName -lastName -email -passwordChangedAt'
   });
 
   next();
