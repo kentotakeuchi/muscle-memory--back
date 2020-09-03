@@ -32,7 +32,8 @@ exports.getRandomMultipleStock = catchAsync(async (req, res, next) => {
   const slicedStocks = randomStocks.slice(0, 10);
 
   res.status(200).json({
-    message: 'randomStocks fetched.',
-    randomStocks: slicedStocks
+    status: 'success',
+    data: slicedStocks,
+    total: slicedStocks.length
   });
 });
