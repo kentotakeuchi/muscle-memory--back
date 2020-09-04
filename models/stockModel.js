@@ -19,6 +19,8 @@ const stockSchema = new mongoose.Schema(
     },
     color: {
       type: String,
+      enum: ['yellow', 'magenta', 'lime', 'cyan'],
+      default: 'yellow',
       required: [true, 'Stock must have a color']
     },
     createdAt: {
