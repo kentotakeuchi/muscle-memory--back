@@ -67,8 +67,7 @@ exports.getOne = (Model, popOptions) =>
 
 exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
-    // TODO: let --> const now
-    const filter = {};
+    const filter = { creator: { $in: req.user._id } };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
@@ -76,7 +75,6 @@ exports.getAll = Model =>
       .sort()
       .limitFields()
       .paginate();
-    // const doc = await features.query.explain();
     const doc = await features.query;
 
     // TODO: render twice..
