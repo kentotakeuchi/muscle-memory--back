@@ -19,21 +19,19 @@ class APIFeatures {
   }
 
   search() {
-    // PRODUCTS
-    if (this.queryString.name) {
-      const searchText = this.queryString.name;
+    if (this.queryString.if) {
+      const searchText = this.queryString.if;
+      console.log({ searchText });
 
+      // TODO: why cannot query both if & then???
+      // this.query = this.query.find({
+      //   $or: [
+      //     { if: { $regex: searchText, $options: 'i' } },
+      //     { then: { $regex: searchText, $options: 'i' } }
+      //   ]
+      // });
       this.query = this.query.find({
-        name: { $regex: searchText, $options: 'i' }
-      });
-    }
-
-    // POSTS
-    if (this.queryString.title) {
-      const searchText = this.queryString.title;
-
-      this.query = this.query.find({
-        title: { $regex: searchText, $options: 'i' }
+        if: { $regex: searchText, $options: 'i' }
       });
     }
 
