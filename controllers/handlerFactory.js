@@ -69,6 +69,11 @@ exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
     const filter = { creator: { $in: req.user._id } };
 
+    let total;
+    // Get the num of all items on a current user
+    if (Object.keys(filter).length === 1)
+      total = await Model.find(filter).countDocuments();
+
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .search()
@@ -77,20 +82,11 @@ exports.getAll = Model =>
       .paginate();
     const doc = await features.query;
 
-    // TODO: render twice..
-    // TODO: how to get total size of filtered items wisely?
-    let total;
-    // IF filter is not empty, fetch 'total' of filtered items
-    if (Object.keys(filter).length !== 0 && filter.constructor === Object)
-      total = await Model.find(filter).countDocuments();
-    // IF filter is empty, fetch 'total' of all items
-    else total = await Model.find().countDocuments();
-
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
-      filteredTotal: total, // total size of filterd items for 'paginator'
-      total: doc.length,
+      total: total, // num of all items
+      featuredTotal: doc.length, // num of items after APIFeatures()
       data: {
         data: doc
       }
