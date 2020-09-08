@@ -70,9 +70,16 @@ exports.getAll = Model =>
     const filter = { creator: { $in: req.user._id } };
 
     let total;
-    // Get the num of all items on a current user
-    if (Object.keys(filter).length === 1)
+    // SEARCH
+    if (req.query.if) {
+      const searchText = req.query.if;
+      filter.if = { $regex: searchText, $options: 'i' };
       total = await Model.find(filter).countDocuments();
+    }
+    // NO FILTER
+    else {
+      total = await Model.find(filter).countDocuments();
+    }
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
@@ -81,11 +88,12 @@ exports.getAll = Model =>
       .limitFields()
       .paginate();
     const doc = await features.query;
+    console.log({ doc });
 
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
-      total: total, // num of all items
+      total: total, // num of items before APIFeatures()
       featuredTotal: doc.length, // num of items after APIFeatures()
       data: {
         data: doc
