@@ -28,8 +28,8 @@ exports.getRandomMultipleStock = catchAsync(async (req, res, next) => {
     return next(new AppError('No random stocks found with that user ID', 404));
   }
 
-  // Get 10 stocks out of the shuffled stocks
-  const slicedStocks = randomStocks.slice(0, 10);
+  // Get 12 stocks out of the shuffled stocks
+  const slicedStocks = randomStocks.slice(0, 12);
 
   res.status(200).json({
     status: 'success',
