@@ -49,13 +49,13 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
-  },
-  stock: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Stock'
-    }
-  ]
+  }
+  // stock: [
+  //   {
+  //     type: mongoose.Schema.ObjectId,
+  //     ref: 'Stock'
+  //   }
+  // ]
 });
 
 userSchema.pre('save', async function(next) {

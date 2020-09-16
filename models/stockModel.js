@@ -5,7 +5,7 @@ const stockSchema = new mongoose.Schema(
     if: {
       type: String,
       required: [true, 'Stock must have a if'],
-      // unique: true,
+      // unique: false,
       trim: true,
       maxlength: [5000, 'If must have less or equal than 5000 characters']
       // validate: [validator.isAlpha, 'post title must only contain characters']
@@ -13,7 +13,7 @@ const stockSchema = new mongoose.Schema(
     then: {
       type: String,
       required: [true, 'Stock must have a then'],
-      // unique: true,
+      // unique: false,
       trim: true,
       maxlength: [5000, 'Then must have less or equal than 5000 characters']
     },
@@ -41,7 +41,6 @@ const stockSchema = new mongoose.Schema(
 );
 
 // QUERY MIDDLEWARE
-// TODO: adjust later..
 stockSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'creator',
